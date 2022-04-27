@@ -2,7 +2,7 @@
   "name": "package-version-report",
   "version": "1.0.0",
   "description": "Generate installed package version report from package.json contents",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha && standard",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
@@ -25,7 +25,7 @@
     "yargs": "^3.0.4"
   },
   "bin": {
-    "package-version-report": "index.js"
+    "package-version-report": "src/index.js"
   },
   "preferGlobal": true,
   "devDependencies": {
