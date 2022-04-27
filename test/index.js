@@ -124,4 +124,57 @@ describe('readme', function () {
   describe('--tests flag', function () {
     it("can't easily be tested without creating an infinitely recursing test.")
   })
+
+  describe('--template flag', function () {
+    it('returns template', function (done) {
+      nixt()
+        .run('./index.js test/fixtures/local/package.json --template test/fixtures/templates/test.md')
+        .stdout(/test.md/)
+        .end(done)
+    })
+    it('returns default template', function (done) {
+      nixt()
+      .run('./index.js test/fixtures/global/package.json --template')
+      .stdout(/# sample/)
+        .end(done)
+    })
+  })
+  describe('--report flag', function () {
+    it('returns report template', function (done) {
+      nixt()
+        .run('./index.js test/fixtures/local/package.json --report')
+        .stdout('## Dependencies\n' +
+        '\n' +
+        '<table>\n' +
+        '    <thead>\n' +
+        '        <tr>\n' +
+        '            <th>Package Name</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Installed Version</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Latest Version</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Is Latest Installed</th>\n' +
+        '            <th>Package Description</th>\n' +
+        '        </tr>\n' +
+        '    </thead>\n' +
+        '    <tbody>\n' +
+        '    </tbody>\n' +
+        '</table>\n' +
+        '\n' +
+        '## Dev Dependencies\n' +
+        '\n' +
+        '<table>\n' +
+        '    <thead>\n' +
+        '        <tr>\n' +
+        '            <th>Package Name</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Installed Version</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Latest Version</th>\n' +
+        '            <th style="text-align: center; vertical-align: middle;">Is Latest Installed</th>\n' +
+        '            <th>Package Description</th>\n' +
+        '        </tr>\n' +
+        '    </thead>\n' +
+        '    <tbody>\n' +
+        '    </tbody>\n' +
+        '</table>')
+        .end(done)
+    })
+  })
 })

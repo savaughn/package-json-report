@@ -19,6 +19,12 @@ var argv = require('yargs')
     alias: 'test',
     description: 'include test output in readme'
   })
+  .option('report', {
+    description: 'generate a report'
+  })
+  .option('template', {
+    description: 'use a custom template'
+  })
   .alias('t', 'tests')
   .help('help')
   .alias('h', 'help')
@@ -26,6 +32,7 @@ var argv = require('yargs')
 var gh = require('github-url-to-object')
 var childProcess = require('child_process')
 var stripAnsi = require('strip-ansi')
+var packageJson = require('package-json')
 
 var pkgPath = path.resolve(process.cwd(), argv._[0])
 
@@ -82,10 +89,31 @@ var getDeps = function (deps) {
   })
 }
 
-if (pkg.dependencies) pkg.depDetails = getDeps(pkg.dependencies)
-if (pkg.devDependencies) pkg.devDepDetails = getDeps(pkg.devDependencies)
+var getLatestVersion = async function (deps) {
+  return Promise.all(deps.map(async function (dep) {
+    dep.latestVersion = (await packageJson(dep.name)).version
+    dep.isLatestInstalled = dep.version === dep.latestVersion ? '✅ ' : '❌'
+    return dep
+  }))
+}
 
-var templatePath = path.join(__dirname, 'template.md')
-var template = hogan.compile(fs.readFileSync(templatePath).toString())
+var getTemplateToUse = function () {
+  if (argv.template && argv.template.length) return argv.template
+  if (argv.report) return 'reportTemplate.md'
+  return 'template.md'
+}
 
-process.stdout.write(template.render(pkg))
+;(async function () {
+  if (pkg.dependencies) {
+    var depList = getDeps(pkg.dependencies)
+    pkg.depDetails = argv.report ? await getLatestVersion(depList) : depList
+  }
+  if (pkg.devDependencies) {
+    var devDepList = getDeps(pkg.devDependencies)
+    pkg.devDepDetails = argv.report ? await getLatestVersion(devDepList) : devDepList
+  }
+  var templatePath = path.join(__dirname, getTemplateToUse())
+  var template = hogan.compile(fs.readFileSync(templatePath).toString())
+
+  process.stdout.write(template.render(pkg))
+})()

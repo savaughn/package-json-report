@@ -1,13 +1,13 @@
 {
-  "name": "package-json-to-readme",
-  "version": "0.0.0-development",
-  "description": "Generate a README.md from package.json contents",
+  "name": "package-version-report",
+  "version": "1.0.0",
+  "description": "Generate installed package version report from package.json contents",
   "main": "index.js",
   "scripts": {
     "test": "mocha && standard",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "repository": "https://github.com/zeke/package-json-to-readme",
+  "repository": "https://github.com/savaughn/package-json-report",
   "keywords": [
     "package.json",
     "readme",
@@ -15,17 +15,17 @@
     "markdown",
     "documentation"
   ],
-  "author": "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com/)",
+  "author": "savaughn",
   "license": "MIT",
   "dependencies": {
     "github-url-to-object": "^1.6.0",
     "hogan.js": "^2.0.0",
+    "latest-version": "^6.0.0",
     "strip-ansi": "^0.2.2",
     "yargs": "^3.0.4"
   },
   "bin": {
-    "package-json-to-readme": "index.js",
-    "readme": "index.js"
+    "package-version-report": "index.js"
   },
   "preferGlobal": true,
   "devDependencies": {
