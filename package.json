@@ -20,12 +20,12 @@
   "dependencies": {
     "github-url-to-object": "^1.6.0",
     "hogan.js": "^2.0.0",
+    "latest-version": "^6.0.0",
     "strip-ansi": "^0.2.2",
     "yargs": "^3.0.4"
   },
   "bin": {
-    "package-json-to-readme": "index.js",
-    "readme": "index.js"
+    "package-version-report": "index.js"
   },
   "preferGlobal": true,
   "devDependencies": {
